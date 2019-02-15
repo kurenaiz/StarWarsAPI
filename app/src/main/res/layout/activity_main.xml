@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#2b2b2b"
     tools:context=".MainActivity">
     <android.support.v7.widget.RecyclerView
             android:layout_width="0dp"
@@ -12,5 +13,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="1.0" app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/recyclerView_main"/>
+            android:id="@+id/recyclerView_main" android:layout_marginLeft="12dp" android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp" android:layout_marginRight="12dp"/>
 </android.support.constraint.ConstraintLayout>

@@ -3,7 +3,7 @@ package com.example.starwarsapi.detail
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.widget.Toast
 
 import com.example.starwarsapi.R
 import com.example.starwarsapi.adapters.CustomViewHolder
@@ -21,15 +21,17 @@ class StarshipActivity : AppCompatActivity() {
     val TAG = "Starship-Activity"
 
     private val dataSource = DataSource
+    private val starshipAdapter = StarshipAdapter()
 
     var rowNumber : Int = 0
-    var urlList : ArrayList<String>? = null
-    var starshipList : ArrayList<Starship> = ArrayList()
+    var urlList : MutableList<String>? = null
+    var starshipList : MutableList<Starship> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         recyclerView_detail.layoutManager = LinearLayoutManager(this)
+        recyclerView_detail.adapter = starshipAdapter
 
         urlList = intent.getStringArrayListExtra(CustomViewHolder.STARSHIP_URL_KEY)
         fetchMore()
@@ -47,19 +49,19 @@ class StarshipActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Starship?>?,
                                         response: Response<Starship?>?) {
                     if (!response?.isSuccessful!!) {
-                        Log.d(TAG,"Error Response:" + response?.code())
+                        Toast.makeText(applicationContext, "Falha em obter uma resposta do Request", Toast.LENGTH_SHORT).show()
                     } else {
                         val people : Starship? = response?.body()
                         starshipList?.add(people!!)
                         rowNumber++
 
-                        recyclerView_detail.adapter = StarshipAdapter(starshipList!!)
+                        starshipAdapter.starshipList = starshipList
                     }
                 }
 
                 override fun onFailure(call: Call<Starship?>?,
                                        t: Throwable?) {
-                    Log.e(TAG,"Error Failure:" + t?.message)
+                    Toast.makeText(applicationContext, "Falha no Request", Toast.LENGTH_SHORT).show()
                 }
             })
         }

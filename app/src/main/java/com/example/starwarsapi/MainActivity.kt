@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.widget.Toast
 import com.example.starwarsapi.adapters.MainAdapter
 import com.example.starwarsapi.data.DataSource
 import com.example.starwarsapi.data.models.StarWarsCatalog
@@ -17,10 +18,13 @@ class MainActivity : AppCompatActivity() {
     val TAG = "Main-Activity"
 
     private val dataSource = DataSource
+    private val mainAdapter = MainAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        recyclerView_main.adapter = mainAdapter
         recyclerView_main.layoutManager = LinearLayoutManager(this)
 
         fetchJsonRequest()
@@ -31,20 +35,18 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<StarWarsCatalog?>?,
                                     response: Response<StarWarsCatalog?>?) {
                 if(!response?.isSuccessful!!) {
-                    Log.d(TAG,"Error Response:" + response?.code())
+                    Toast.makeText(applicationContext, "Falha em obter uma resposta do Request", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val catalog : StarWarsCatalog? = response?.body()
 
-                    runOnUiThread{
-                        recyclerView_main.adapter = MainAdapter(catalog!!)
-                    }
+                    mainAdapter.catalog = catalog!!.results
                 }
             }
 
             override fun onFailure(call: Call<StarWarsCatalog?>?,
                                    t: Throwable?) {
-                Log.e(TAG,"Error Failure:" + t?.message)
+                Toast.makeText(applicationContext, "O Request falhou.", Toast.LENGTH_SHORT).show()
             }
         })
     }

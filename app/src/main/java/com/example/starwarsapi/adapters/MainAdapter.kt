@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.example.starwarsapi.R
-import com.example.starwarsapi.data.models.StarWarsCatalog
+import com.example.starwarsapi.data.models.Film
+
 import com.example.starwarsapi.detail.PeopleActivity
 import com.example.starwarsapi.detail.PlanetActivity
 import com.example.starwarsapi.detail.SpecieActivity
@@ -15,11 +16,19 @@ import com.example.starwarsapi.detail.StarshipActivity
 import kotlinx.android.synthetic.main.film_row.view.*
 
 import java.util.*
+import kotlin.collections.ArrayList
 
-class MainAdapter(val catalog : StarWarsCatalog) : RecyclerView.Adapter<CustomViewHolder>() {
-    override fun getItemCount(): Int {
-        return catalog.results.count()
-    }
+class MainAdapter : RecyclerView.Adapter<CustomViewHolder>() {
+
+    var catalog: MutableList<Film> = mutableListOf()
+        set(value) {
+            field = mutableListOf()
+            field.addAll(value)
+            notifyDataSetChanged()
+        }
+
+
+    override fun getItemCount() = catalog.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
@@ -29,24 +38,24 @@ class MainAdapter(val catalog : StarWarsCatalog) : RecyclerView.Adapter<CustomVi
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         //setting film title
-        val filmTitleText = catalog.results.get(position).title
+        val filmTitleText = catalog.get(position).title
         holder?.view?.textView_main_filmTitle?.text = filmTitleText
 
         //setting film description
-        val filmDescriptionText =  catalog.results.get(position).opening_crawl
+        val filmDescriptionText =  catalog.get(position).opening_crawl
         holder?.view?.textView_main_filmDescription?.text = String.format("""%s""",filmDescriptionText)
 
         //setting film director
-        val filmDirectorText = catalog.results.get(position).director
+        val filmDirectorText = catalog.get(position).director
         holder?.view?.textView_main_filmDirector.text = filmDirectorText
 
         //setting film release date
-        val filmReleaseDateText = catalog.results.get(position).release_date
+        val filmReleaseDateText = catalog.get(position).release_date
         holder?.view?.textView_main_filmReleaseDate.text = formattedDate(filmReleaseDateText)
 
         //setting film posters
         val posterImageView = holder?.view?.imageView_main_filmImage
-        when(catalog.results.get(position).episode_id){
+        when(catalog.get(position).episode_id){
             1 -> posterImageView.setImageResource(R.drawable.starwars_ep1_poster)
             2 -> posterImageView.setImageResource(R.drawable.starwars_ep2_poster)
             3 -> posterImageView.setImageResource(R.drawable.starwars_ep3_poster)
@@ -57,10 +66,10 @@ class MainAdapter(val catalog : StarWarsCatalog) : RecyclerView.Adapter<CustomVi
         }
 
         //passing a list of url for reference
-        holder?.peoples_url_list = catalog.results.get(position).characters
-        holder?.planets_url_list = catalog.results.get(position).planets
-        holder?.species_url_list = catalog.results.get(position).species
-        holder?.starships_url_list = catalog.results.get(position).starships
+        holder?.peoples_url_list = catalog.get(position).characters
+        holder?.planets_url_list = catalog.get(position).planets
+        holder?.species_url_list = catalog.get(position).species
+        holder?.starships_url_list = catalog.get(position).starships
     }
 
     //returns the year of date
@@ -90,28 +99,24 @@ class CustomViewHolder(val view: View,
         //adding listeners for each button in the row
         view.button_main_cast.setOnClickListener {
             val intent = Intent(view.context,PeopleActivity::class.java)
-            //intent.putExtra(CAST_TITLE_KEY, "")
             intent.putExtra(PEOPLE_URL_KEY, peoples_url_list)
             view.context.startActivity(intent)
         }
 
         view.button_main_planets.setOnClickListener {
             val intent = Intent(view.context,PlanetActivity::class.java)
-            //intent.putExtra(PLANET_TITLE_KEY, "")
             intent.putExtra(PLANET_URL_KEY, planets_url_list)
             view.context.startActivity(intent)
         }
 
         view.button_main_species.setOnClickListener {
             val intent = Intent(view.context,SpecieActivity::class.java)
-            //intent.putExtra(SPECIE_TITLE_KEY, "")
             intent.putExtra(SPECIE_URL_KEY, species_url_list)
             view.context.startActivity(intent)
         }
 
         view.button_main_starships.setOnClickListener {
             val intent = Intent(view.context,StarshipActivity::class.java)
-            //intent.putExtra(STARSHIP_TITLE_KEY, "")
             intent.putExtra(STARSHIP_URL_KEY, starships_url_list)
             view.context.startActivity(intent)
         }

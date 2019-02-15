@@ -8,11 +8,16 @@ import com.example.starwarsapi.R
 import com.example.starwarsapi.data.models.Specie
 import kotlinx.android.synthetic.main.detail_row.view.*
 
-class SpecieAdapter(val specieList : List<Specie>?) : RecyclerView.Adapter<SpecieViewHolder>() {
+class SpecieAdapter : RecyclerView.Adapter<SpecieViewHolder>() {
 
-    override fun getItemCount(): Int {
-        return specieList!!.count()
-    }
+    var specieList: MutableList<Specie> = mutableListOf()
+        set(value) {
+            field = mutableListOf()
+            field.addAll(value)
+            notifyDataSetChanged()
+        }
+
+    override fun getItemCount() = specieList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpecieViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
@@ -26,6 +31,5 @@ class SpecieAdapter(val specieList : List<Specie>?) : RecyclerView.Adapter<Speci
     }
 }
 
-class SpecieViewHolder(val view : View): RecyclerView.ViewHolder(view){
-
+class SpecieViewHolder(val view: View): RecyclerView.ViewHolder(view){
 }

@@ -8,20 +8,25 @@ import com.example.starwarsapi.R
 import com.example.starwarsapi.data.models.People
 import kotlinx.android.synthetic.main.detail_row.view.*
 
-class PeopleAdapter(val peopleList : List<People>?) : RecyclerView.Adapter<PeopleViewHolder>() {
+class PeopleAdapter : RecyclerView.Adapter<PeopleViewHolder>() {
 
-    override fun getItemCount(): Int {
-        return peopleList!!.count()
-    }
+    var peopleList: MutableList<People> = mutableListOf()
+        set(value) {
+            field = mutableListOf()
+            field.addAll(value)
+            notifyDataSetChanged()
+        }
+
+    override fun getItemCount() = peopleList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleViewHolder {
-        val layoutInflater = LayoutInflater.from(parent?.context)
+        val layoutInflater = LayoutInflater.from(parent.context)
         val customView = layoutInflater.inflate(R.layout.detail_row,parent,false)
         return PeopleViewHolder(customView)
     }
 
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
-        val chararacterName = peopleList?.get(position)?.name
+        val chararacterName = peopleList.get(position).name
         holder?.view?.textView_detail_name?.text = chararacterName
     }
 }

@@ -3,7 +3,7 @@ package com.example.starwarsapi.detail
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.widget.Toast
 
 import com.example.starwarsapi.R
 import com.example.starwarsapi.adapters.CustomViewHolder
@@ -21,15 +21,17 @@ class PeopleActivity : AppCompatActivity() {
     val TAG = "People-Activity"
 
     private val dataSource = DataSource
+    private val peopleAdapter = PeopleAdapter()
 
     var rowNumber : Int = 0
-    var urlList : ArrayList<String>? = null
-    var peopleList : ArrayList<People> = ArrayList()
+    var urlList : MutableList<String>? = null
+    var peopleList : MutableList<People> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         recyclerView_detail.layoutManager = LinearLayoutManager(this)
+        recyclerView_detail.adapter = peopleAdapter
 
         urlList = intent.getStringArrayListExtra(CustomViewHolder.PEOPLE_URL_KEY)
         fetchMore()
@@ -47,19 +49,19 @@ class PeopleActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<People?>?,
                                         response: Response<People?>?) {
                     if (!response?.isSuccessful!!) {
-                        Log.d(TAG, "Error Response:" + response?.code())
+                        Toast.makeText(applicationContext, "Falha em obter uma resposta do Request", Toast.LENGTH_SHORT).show()
                     } else {
                         val people: People? = response?.body()
                         peopleList?.add(people!!)
                         rowNumber++
 
-                        recyclerView_detail.adapter = PeopleAdapter(peopleList!!)
+                        peopleAdapter.peopleList = peopleList
                     }
                 }
 
                 override fun onFailure(call: Call<People?>?,
                                        t: Throwable?) {
-                    Log.e(TAG, "Error Failure:" + t?.message)
+                    Toast.makeText(applicationContext, "Falha no Request", Toast.LENGTH_SHORT).show()
                 }
             })
         }

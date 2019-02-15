@@ -1,6 +1,3 @@
 package com.example.starwarsapi.data.models
 
-class StarWarsCatalog
-{
-    val results = listOf<Film>()
-}
+data class StarWarsCatalog(val results : MutableList<Film>)

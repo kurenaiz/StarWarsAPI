@@ -8,11 +8,16 @@ import com.example.starwarsapi.R
 import com.example.starwarsapi.data.models.Planet
 import kotlinx.android.synthetic.main.detail_row.view.*
 
-class PlanetAdapter(val planetList : List<Planet>?) : RecyclerView.Adapter<PlanetViewHolder>() {
+class PlanetAdapter : RecyclerView.Adapter<PlanetViewHolder>() {
 
-    override fun getItemCount(): Int {
-        return planetList!!.count()
-    }
+    var planetList: MutableList<Planet> = mutableListOf()
+        set(value) {
+            field = mutableListOf()
+            field.addAll(value)
+            notifyDataSetChanged()
+        }
+
+    override fun getItemCount() = planetList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanetViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
@@ -26,6 +31,5 @@ class PlanetAdapter(val planetList : List<Planet>?) : RecyclerView.Adapter<Plane
     }
 }
 
-class PlanetViewHolder(val view : View): RecyclerView.ViewHolder(view){
-
+class PlanetViewHolder(val view: View): RecyclerView.ViewHolder(view){
 }

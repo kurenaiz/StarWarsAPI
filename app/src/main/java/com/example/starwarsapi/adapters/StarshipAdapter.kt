@@ -8,11 +8,16 @@ import com.example.starwarsapi.R
 import com.example.starwarsapi.data.models.Starship
 import kotlinx.android.synthetic.main.detail_row.view.*
 
-class StarshipAdapter(val starshipList : List<Starship>?) : RecyclerView.Adapter<StarshipViewHolder>() {
+class StarshipAdapter : RecyclerView.Adapter<StarshipViewHolder>() {
 
-    override fun getItemCount(): Int {
-        return starshipList!!.count()
-    }
+    var starshipList: MutableList<Starship> = mutableListOf()
+        set(value) {
+            field = mutableListOf()
+            field.addAll(value)
+            notifyDataSetChanged()
+        }
+
+    override fun getItemCount() = starshipList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StarshipViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
@@ -26,6 +31,5 @@ class StarshipAdapter(val starshipList : List<Starship>?) : RecyclerView.Adapter
     }
 }
 
-class StarshipViewHolder(val view : View): RecyclerView.ViewHolder(view){
-
+class StarshipViewHolder(val view: View): RecyclerView.ViewHolder(view){
 }

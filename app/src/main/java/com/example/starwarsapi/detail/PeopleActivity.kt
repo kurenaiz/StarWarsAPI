@@ -33,6 +33,8 @@ class PeopleActivity : AppCompatActivity() {
         recyclerView_detail.layoutManager = LinearLayoutManager(this)
         recyclerView_detail.adapter = peopleAdapter
 
+        supportActionBar?.title = "Cast"
+
         urlList = intent.getStringArrayListExtra(CustomViewHolder.PEOPLE_URL_KEY)
         fetchMore()
 

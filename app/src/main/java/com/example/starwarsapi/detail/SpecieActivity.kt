@@ -33,6 +33,8 @@ class SpecieActivity : AppCompatActivity() {
         recyclerView_detail.layoutManager = LinearLayoutManager(this)
         recyclerView_detail.adapter = planetAdapter
 
+        supportActionBar?.title = "Species"
+
         urlList = intent.getStringArrayListExtra(CustomViewHolder.SPECIE_URL_KEY)
         fetchMore()
 

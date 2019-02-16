@@ -33,6 +33,8 @@ class PlanetActivity : AppCompatActivity() {
         recyclerView_detail.layoutManager = LinearLayoutManager(this)
         recyclerView_detail.adapter = planetAdapter
 
+        supportActionBar?.title = "Planets"
+
         urlList = intent.getStringArrayListExtra(CustomViewHolder.PLANET_URL_KEY)
         fetchMore()
 

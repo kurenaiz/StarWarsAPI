@@ -33,6 +33,8 @@ class StarshipActivity : AppCompatActivity() {
         recyclerView_detail.layoutManager = LinearLayoutManager(this)
         recyclerView_detail.adapter = starshipAdapter
 
+        supportActionBar?.title = "Starships"
+
         urlList = intent.getStringArrayListExtra(CustomViewHolder.STARSHIP_URL_KEY)
         fetchMore()
 
